@@ -1,5 +1,31 @@
 <template>
-  <div class="login">
-    <h1>TableList</h1>
+  <div class="klyd-table-list">
+    <el-breadcrumb>
+      <el-breadcrumb-item to="/main">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>桌台管理</el-breadcrumb-item>
+      <el-breadcrumb-item>桌台列表</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <br>
+    <el-row>
+      <el-col v-for="(t,i) in tableList" :key="i" :xs="12" :sm="8" :md="6" :lg="4" :xl="2">
+        <klyd-table :data="t"></klyd-table>
+      </el-col>
+    </el-row>
   </div>
 </template>
+
+<script>
+import Table from '../components/Table'
+export default {
+  data(){
+    return{
+      tableList:[]
+    }
+  },
+  porps:[data],
+  components:{
+    'klyd-table':Table
+  }
+}  
+</script>

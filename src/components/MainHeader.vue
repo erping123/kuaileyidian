@@ -1,43 +1,40 @@
 <template>
-  <div class="mainheader">
-    <h3>太委屈尔特人委托</h3>
-    <div class="mainheader-right">
-      <h4>登录用户：admin</h4>
-      <el-button type="primary" plain>退出</el-button>
+  <div class="klyd-mainheader">
+    <h3 class="klyd-title">{{$store.state.globalSettings.appName}}管理后台</h3>
+    <div class="klyd-right">
+      登录用户：{{$store.state.adminName}}
+      <el-button size="mini" @click="quit">退出</el-button>
     </div>
   </div>
 </template>
 <script>
 export default {
-  data(){
-    return{
-
+  methods:{
+    quit(){
+      // 清除当前用户的登录信息
+      this.$store.commit('setAdminName','');
+      // 跳转回登录页
+      this.$router.push('/login');
     }
   }
 }
 </script>
-<style>
-  .mainheader{
-    background-color:#eee;
+<style lang="scss">
+  $header-height:60px;
+  .klyd-mainheader{
+    background-color:#dcdfe6;
     border-radius:4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height:36px;
-  }
-  .mainheader h3{
+    line-height:$header-height;
+    height:$header-height;
+    padding:0 6px;
+    .klyd-title{
     margin:0;
-    line-height: 36px;
-    padding-left:20px;
-    font-size:1em;
-  }
-  .mainheader-right{
-    display: flex;
-    justify-content: space-between;
-    font-size:0.75em;
-  }
-  .el-button--mini,.el-button--mini.is-round {
-    padding: 3px 8px;
+    float:left;
+    color:#444;
+    }
+    .klyd-right{
+    float:right;
+    }
   }
 </style>
 

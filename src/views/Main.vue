@@ -3,53 +3,56 @@
     <el-container>
       <!--左侧边栏-->
       <el-aside width="200px">
-        <el-menu default-active="2-1">
-          <el-submenu index="1">
-            <template slot="title">
+        <!--boolean 数值型要属性绑定  -->
+        <el-menu :default-active="defaultActive" :default-openeds="defaultOpeneds" :unique-opened="true" :router="true">
+          <!-- 第一个菜单项 -->
+          <el-menu-item index="/settings">
               <i class="el-icon-setting"></i>
               <span>全局设置</span>
-            </template>
-          </el-submenu>
-          <el-submenu index="2"> 
+          </el-menu-item>
+          <!-- 第二个菜单项 -->
+          <el-submenu index="table"> 
             <template slot="title">
               <i class="el-icon-menu"></i>
               <span>桌台管理</span>
             </template>
-            <el-menu-item index="2-1">所有桌台</el-menu-item>
-            <el-menu-item index="2-2">添加桌台</el-menu-item>
-            <el-menu-item index="2-3">删除桌台</el-menu-item>
+            <el-menu-item-group>
+              <el-menu-item index="/table/list">所有桌台</el-menu-item>
+              <el-menu-item index="/table/add">添加桌台</el-menu-item>
+              <el-menu-item index="/table/delete">删除桌台</el-menu-item>
+            </el-menu-item-group>
           </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
+          <!-- 第三个菜单项 -->
+          <el-menu-item index="/category/list">
               <i class="el-icon-message"></i>
               <span>菜品类别</span>
-            </template>
-          </el-submenu>
-          <el-submenu index="3">
+          </el-menu-item>
+          <!-- 第四个菜单项 -->
+          <el-submenu index="dish">
             <template slot="title">
               <i class="el-icon-tickets"></i>
               <span>菜品管理</span>
             </template>
-            <el-menu-item index="3-1">所有菜品</el-menu-item>
-            <el-menu-item index="3-2">添加菜品</el-menu-item>
-            <el-menu-item index="3-3">删除菜品</el-menu-item>
-            <el-menu-item index="3-4">修改菜品</el-menu-item>
+            <el-menu-item-group>
+              <el-menu-item index="/dish/list">所有菜品</el-menu-item>
+              <el-menu-item index="/dish/add">添加菜品</el-menu-item>
+              <el-menu-item index="/dish/delete">删除菜品</el-menu-item>
+              <el-menu-item index="/dish/update">修改菜品</el-menu-item>
+            </el-menu-item-group>
           </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
+          <!-- 第五个菜单项 -->
+          <el-menu-item index="/order/list">
               <i class="el-icon-date"></i>
               <span>订单列表</span>
-            </template>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
+          </el-menu-item>
+          <!-- 第六个菜单项 -->
+          <el-menu-item index="/security">
               <i class="el-icon-bell"></i>
               <span>安全管理</span>
-            </template>
-          </el-submenu>
+          </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-container>
+      <el-container> 
         <!--顶部边栏-->
         <el-header height="60px">
           <MainHeader></MainHeader>  
@@ -63,15 +66,40 @@
   </div>
 </template>
 <script>
-import MainHeader from '../components/MainHeader.vue'
+import MainHeader from '../components/MainHeader'
 export default {
+  data(){   //数据属性
+    return{  
+
+    }
+  },
+  computed:{   //计算属性=数据属性+操作方法
+    defaultOpeneds(){
+      if(this.$route.path.indexOf('/table')==0){
+        //用户当前在浏览/table/xxx菜单项
+        return ['table'];
+      }else if(this.$route.path.indexOf('/dish')==0){
+        return ['dish'];
+      }else{
+        return [];
+      }
+    },
+    defaultActive(){
+      // 用户当前访问哪项，就把对应的菜单项设置为"当前激活项"
+      return this.$route.path;
+    }
+  },
+  //create/mount/update/destroy
   beforeCreate() {
     // 组件创建之前先要检查是否已经登录为管理员
     if(!this.$store.state.adminName){
       this.$router.push('/login');  //未登录则跳转
     }
   },
-  components: {MainHeader},
+  components: {
+    // 当前组件内部使用过的子组件列表
+    MainHeader
+    },
 }
 </script>
 <style lang="scss">
